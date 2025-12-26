@@ -1,0 +1,472 @@
+:root {
+  --red: #ff4757;
+  --green: #2ed573;
+  --yellow: #ffa502;
+  --blue: #1e90ff;
+  --board-bg: #fff;
+  --dice-size: 60px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", sans-serif;
+}
+
+/* Animated Gradient Background */
+body {
+  background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+  background-size: 400% 400%;
+  animation: gradientBG 15s ease infinite;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+@keyframes gradientBG {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.game-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Center vertically */
+  align-items: center;
+  gap: 10px;
+  opacity: 1;
+  transition: opacity 0.5s;
+}
+.game-container.hidden {
+  opacity: 0;
+  pointer-events: none;
+  display: none;
+}
+
+/* --- The Board (Smaller Size) --- */
+.ludo-board {
+  /* Reduced from 95vmin to 85vmin */
+  width: 85vmin;
+  height: 85vmin;
+  max-width: 550px;
+  max-height: 550px;
+  background: var(--board-bg);
+  display: grid;
+  grid-template-columns: repeat(15, 1fr);
+  grid-template-rows: repeat(15, 1fr);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+  border-radius: 12px;
+  position: relative;
+  border: 5px solid #fff;
+}
+
+/* Grid Cells */
+.cell {
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Bases */
+.base {
+  grid-row: span 6;
+  grid-column: span 6;
+  padding: 15px;
+}
+.base-box {
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  place-items: center;
+  box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.1);
+}
+.base.red .base-box {
+  background: var(--red);
+}
+.base.green .base-box {
+  background: var(--green);
+}
+.base.yellow .base-box {
+  background: var(--yellow);
+}
+.base.blue .base-box {
+  background: var(--blue);
+}
+
+/* Find this in style.css and update it */
+.base-circle {
+  width: 45%;
+  height: 45%;
+  background: white;
+  border-radius: 50%;
+  box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.2);
+
+  /* This line fixes the giant bubbles: */
+  position: relative;
+}
+
+/* Path Colors */
+.path-red {
+  background: var(--red);
+  opacity: 0.2;
+}
+.path-green {
+  background: var(--green);
+  opacity: 0.2;
+}
+.path-yellow {
+  background: var(--yellow);
+  opacity: 0.2;
+}
+.path-blue {
+  background: var(--blue);
+  opacity: 0.2;
+}
+.safe-star {
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23555"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>');
+  background-size: 60%;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+/* Center Home */
+.home-center {
+  grid-column: 7 / span 3;
+  grid-row: 7 / span 3;
+  position: relative;
+  background: white;
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+.tri {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-style: solid;
+}
+.tri-red {
+  border-width: 0 0 100% 100%;
+  border-color: transparent transparent transparent var(--red);
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 50%;
+  transform: rotate(-45deg);
+  transform-origin: bottom right;
+}
+.tri-green {
+  border-width: 0 0 100% 100%;
+  border-color: transparent transparent transparent var(--green);
+  top: 0;
+  right: 0;
+  width: 50%;
+  height: 50%;
+  transform: rotate(45deg);
+  transform-origin: bottom left;
+}
+.tri-blue {
+  border-width: 0 0 100% 100%;
+  border-color: transparent transparent transparent var(--blue);
+  bottom: 0;
+  left: 0;
+  width: 50%;
+  height: 50%;
+  transform: rotate(-135deg);
+  transform-origin: top right;
+}
+.tri-yellow {
+  border-width: 0 0 100% 100%;
+  border-color: transparent transparent transparent var(--yellow);
+  bottom: 0;
+  right: 0;
+  width: 50%;
+  height: 50%;
+  transform: rotate(135deg);
+  transform-origin: top left;
+}
+
+/* --- Tokens --- */
+.token {
+  width: 75%;
+  height: 75%;
+  border-radius: 50%;
+  border: 2px solid white;
+  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
+  position: absolute;
+  z-index: 10;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.token.red {
+  background: var(--red);
+  background: radial-gradient(circle at 30% 30%, #ff6b81, #c0392b);
+}
+.token.green {
+  background: var(--green);
+  background: radial-gradient(circle at 30% 30%, #7bed9f, #218c74);
+}
+.token.yellow {
+  background: var(--yellow);
+  background: radial-gradient(circle at 30% 30%, #ffeaa7, #e1b12c);
+}
+.token.blue {
+  background: var(--blue);
+  background: radial-gradient(circle at 30% 30%, #74b9ff, #0984e3);
+}
+
+/* Token Animation */
+.clickable {
+  cursor: pointer;
+  animation: bounce 0.8s infinite alternate;
+  border: 2px solid #fff;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+  z-index: 20;
+}
+@keyframes bounce {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-5px);
+  }
+}
+
+/* --- UI Controls --- */
+.ui-panel {
+  display: flex;
+  width: 100%;
+  max-width: 500px;
+  justify-content: space-between;
+  padding: 5px 20px;
+  color: white;
+}
+.player-card {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  opacity: 0.4;
+  transition: 0.3s;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 5px 15px;
+  border-radius: 20px;
+  backdrop-filter: blur(5px);
+}
+.player-card.active {
+  opacity: 1;
+  transform: scale(1.1);
+  background: rgba(255, 255, 255, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+}
+.avatar {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+.avatar.red {
+  background: var(--red);
+}
+.avatar.green {
+  background: var(--green);
+}
+.avatar.yellow {
+  background: var(--yellow);
+}
+.avatar.blue {
+  background: var(--blue);
+}
+
+/* --- 3D Dice Animation --- */
+.dice-wrapper {
+  text-align: center;
+  height: 80px;
+  width: 80px;
+  position: relative;
+  perspective: 600px;
+}
+.dice-platform {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.dice-cube {
+  width: 50px;
+  height: 50px;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  cursor: pointer;
+}
+.dice-cube.rolling {
+  animation: roll3D 0.6s linear infinite;
+}
+
+.side {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5rem;
+  color: #333;
+  font-weight: bold;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.front {
+  transform: rotateY(0deg) translateZ(25px);
+}
+.back {
+  transform: rotateY(180deg) translateZ(25px);
+}
+.right {
+  transform: rotateY(90deg) translateZ(25px);
+}
+.left {
+  transform: rotateY(-90deg) translateZ(25px);
+}
+.top {
+  transform: rotateX(90deg) translateZ(25px);
+}
+.bottom {
+  transform: rotateX(-90deg) translateZ(25px);
+}
+
+@keyframes roll3D {
+  0% {
+    transform: rotateX(0) rotateY(0);
+  }
+  100% {
+    transform: rotateX(360deg) rotateY(360deg);
+  }
+}
+
+/* Modal */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+.modal.hidden {
+  display: none;
+}
+.modal-content {
+  background: white;
+  padding: 40px;
+  border-radius: 20px;
+  text-align: center;
+  animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+.btn-group {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.btn-start {
+  padding: 12px 24px;
+  border: none;
+  color: white;
+  border-radius: 50px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.2s;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+.btn-start:hover {
+  transform: scale(1.05);
+}
+/* --- Center Home (Updated) --- */
+.home-center {
+  grid-column: 7 / span 3;
+  grid-row: 7 / span 3;
+
+  /* This creates the 4 colored triangles exactly like your image */
+  background: conic-gradient(
+    from -45deg,
+    var(--green) 0deg 90deg,
+    /* Top Triangle */ var(--yellow) 90deg 180deg,
+    /* Right Triangle */ var(--blue) 180deg 270deg,
+    /* Bottom Triangle */ var(--red) 270deg 360deg /* Left Triangle */
+  );
+
+  /* Optional: Adds a white border inside to make it look distinct */
+  border: 2px solid white;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Hide the old triangle divs inside the center (cleanup) */
+.tri {
+  display: none;
+}
+/* --- Music Toggle Button --- */
+.music-btn {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 2px solid white;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(5px);
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+  z-index: 1000; /* Ensure it stays on top */
+  transition: all 0.3s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.music-btn:hover {
+  transform: scale(1.1);
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.music-btn.hidden {
+  display: none;
+}
+
+@keyframes popIn {
+  from {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}

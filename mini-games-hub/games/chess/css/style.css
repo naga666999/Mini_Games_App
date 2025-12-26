@@ -1,0 +1,260 @@
+:root {
+  --bg-color: #1a1a1d;
+  --panel-bg: #26262b;
+  --text-color: #e0e0e0;
+  --board-light: #eeeed2;
+  --board-dark: #769656;
+  --highlight: rgba(255, 255, 0, 0.5);
+  --check-glow: 0 0 15px #ff4444;
+  --select-glow: inset 0 0 0 4px rgba(20, 85, 30, 0.5);
+  --font-main: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body.light-mode {
+  --bg-color: #f0f0f0;
+  --panel-bg: #ffffff;
+  --text-color: #333;
+  --board-light: #f0d9b5;
+  --board-dark: #b58863;
+}
+
+body {
+  margin: 0;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-family: var(--font-main);
+  display: flex;
+  justify-content: center;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.app-container {
+  display: flex;
+  width: 100%;
+  max-width: 1200px;
+  gap: 20px;
+  padding: 20px;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 300px;
+  background: var(--panel-bg);
+  padding: 20px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.history-panel {
+  flex-grow: 1;
+  overflow-y: auto;
+  background: rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  border-radius: 4px;
+}
+
+/* Board */
+.game-area {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  grid-template-rows: repeat(8, 1fr);
+  width: 80vh;
+  height: 80vh;
+  user-select: none;
+  border: 5px solid #333;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+}
+
+.square {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 4.5vh;
+  cursor: pointer;
+  position: relative;
+}
+
+.square.light {
+  background-color: var(--board-light);
+  color: black;
+}
+.square.dark {
+  background-color: var(--board-dark);
+  color: black;
+}
+/* --- ENHANCED PIECES --- */
+
+.piece {
+  cursor: grab;
+  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Bouncy animation */
+  z-index: 2;
+  font-weight: 900; /* Force Bold */
+
+  /* Make them slightly larger than the square text */
+  transform: scale(1.1);
+
+  /* Crisp rendering */
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Bright White Pieces with Deep Shadow */
+.piece.white {
+  color: #ffffff;
+
+  /* 1. Black outline for contrast 
+       2. Inner brightness
+       3. Soft outer glow */
+  text-shadow: 0px 2px 0px #000000, 0px 0px 5px rgba(255, 255, 255, 0.8);
+
+  filter: drop-shadow(0 4px 3px rgba(0, 0, 0, 0.4));
+}
+
+/* Deep Black Pieces with White Outline */
+.piece.black {
+  color: #1a1a1d;
+
+  /* White outline so they are visible on dark squares */
+  text-shadow: 0px 0px 2px #ffffff, 1px 1px 0px rgba(255, 255, 255, 0.5);
+
+  filter: drop-shadow(0 4px 3px rgba(0, 0, 0, 0.5));
+}
+
+/* Animation when moving */
+.piece:active {
+  transform: scale(1.3);
+  cursor: grabbing;
+}
+/* Highlights */
+.square.selected {
+  box-shadow: var(--select-glow);
+}
+.square.hint::after {
+  content: "";
+  width: 15px;
+  height: 15px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 50%;
+}
+.square.check {
+  box-shadow: inset 0 0 20px red;
+}
+
+/* Modal */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
+.hidden {
+  display: none !important;
+}
+.promotion-options span {
+  font-size: 4rem;
+  cursor: pointer;
+  margin: 0 10px;
+  color: white;
+}
+
+/* Mobile */
+@media (max-width: 800px) {
+  .app-container {
+    flex-direction: column;
+  }
+  .sidebar {
+    width: 100%;
+    height: 200px;
+    order: 2;
+  }
+  .board {
+    width: 90vw;
+    height: 90vw;
+  }
+  .square {
+    font-size: 9vw;
+  }
+  /* Timer Styles */
+  .timers {
+    display: flex;
+    gap: 10px;
+    margin: 10px 0;
+  }
+
+  .timer {
+    flex: 1;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 10px;
+    border-radius: 6px;
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+  }
+
+  .timer.active {
+    background: rgba(46, 204, 113, 0.2); /* Green glow */
+    border-color: #2ecc71;
+    box-shadow: 0 0 10px rgba(46, 204, 113, 0.3);
+    transform: scale(1.05);
+  }
+
+  .timer.low-time {
+    background: rgba(231, 76, 60, 0.2); /* Red warning */
+    border-color: #e74c3c;
+    animation: pulse 1s infinite;
+  }
+
+  @keyframes pulse {
+    0% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.7;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  /* Game Over Modal */
+  .game-over-content {
+    background: linear-gradient(135deg, #1e1e24, #2a2a35);
+    border: 2px solid #fff;
+    padding: 40px;
+    text-align: center;
+    border-radius: 15px;
+    color: white;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.8);
+  }
+
+  .game-over-content h2 {
+    font-size: 3rem;
+    margin: 0 0 10px 0;
+    color: #f1c40f; /* Gold */
+  }
+
+  .game-over-content button {
+    margin-top: 20px;
+    background: #2ecc71;
+    width: auto;
+    padding: 10px 30px;
+  }
+}

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Number Guessing Game</title>
+    <link rel="stylesheet" href="/css/number.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
+  <body class="dark">
+    <div class="game-card">
+      <div class="top-bar">
+        <span id="timer">⏱ 0s</span>
+        <button class="toggle" onclick="toggleTheme()">🌙</button>
+      </div>
+
+      <h1>🎯 Number Guessing Game</h1>
+      <p>Guess a number between <b>1 and 100</b></p>
+
+      <input type="number" id="guessInput" placeholder="Enter your guess" />
+      <button onclick="checkGuess()">Check Guess</button>
+
+      <p id="message"></p>
+      <p id="attempts">Attempts: 0</p>
+      <p id="bestScore">🏆 Best Score: --</p>
+
+      <button class="reset" onclick="resetGame()">Restart</button>
+    </div>
+
+    <audio id="successSound" src="/assests/sounds/success.mp3"></audio>
+    <audio id="wrongSound" src="/assests/sounds/wrong.mp3"></audio>
+    <audio id="clickSound" src="/assests/sounds/click.mp3"></audio>
+
+    <script src="/js/number.js"></script>
+  </body>
+</html>

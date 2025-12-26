@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ludo Pro - Ultimate Web Edition</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <button id="music-btn" class="music-btn hidden">🎵</button>
+    <audio id="bg-music" loop>
+      <source src="/project4/sounds/bgm.mp3" type="audio/mpeg" />
+    </audio>
+
+    <div id="start-screen" class="modal">
+      <div class="modal-content start-box">
+        <h1 style="font-size: 3rem; margin-bottom: 10px">🎲 Ludo Pro</h1>
+        <p style="margin-bottom: 20px; color: #666">Select Number of Players</p>
+        <div class="btn-group">
+          <button
+            onclick="startGame(2)"
+            class="btn-start"
+            style="background: var(--red)"
+          >
+            2 Players
+          </button>
+          <button
+            onclick="startGame(3)"
+            class="btn-start"
+            style="background: var(--green)"
+          >
+            3 Players
+          </button>
+          <button
+            onclick="startGame(4)"
+            class="btn-start"
+            style="background: var(--blue)"
+          >
+            4 Players
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="game-container hidden" id="game-root">
+      <div class="ui-panel top-panel">
+        <div class="player-card active" id="player-0-card">
+          <div class="avatar red"></div>
+          <span>Red</span>
+        </div>
+        <div class="player-card" id="player-1-card">
+          <div class="avatar green"></div>
+          <span>Green</span>
+        </div>
+      </div>
+
+      <div class="ludo-board" id="ludo-board">
+        <div class="home-center"></div>
+      </div>
+
+      <div class="ui-panel bottom-panel">
+        <div class="player-card" id="player-3-card">
+          <div class="avatar blue"></div>
+          <span>Blue</span>
+        </div>
+
+        <div class="dice-wrapper">
+          <div class="dice-platform">
+            <div class="dice-cube" id="dice-btn">
+              <div class="side front">🎲</div>
+              <div class="side back">::</div>
+              <div class="side right">:::</div>
+              <div class="side left">::</div>
+              <div class="side top">.</div>
+              <div class="side bottom">::</div>
+            </div>
+          </div>
+          <p id="instruction-text" style="font-size: 0.9rem; margin-top: 5px">
+            Tap Dice to Roll
+          </p>
+        </div>
+
+        <div class="player-card" id="player-2-card">
+          <div class="avatar yellow"></div>
+          <span>Yellow</span>
+        </div>
+      </div>
+    </div>
+
+    <div id="win-modal" class="modal hidden">
+      <div class="modal-content">
+        <h2>🏆 WINNER! 🏆</h2>
+        <p
+          id="winner-name"
+          style="font-size: 1.5rem; font-weight: bold; margin: 20px 0"
+        >
+          Player Name
+        </p>
+        <button
+          onclick="location.reload()"
+          class="btn-start"
+          style="background: #333"
+        >
+          Play Again
+        </button>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

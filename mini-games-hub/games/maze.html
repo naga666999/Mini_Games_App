@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>Magma Core: Drone Edition</title>
+    <link rel="stylesheet" href="/css/maze.css" />
+  </head>
+  <body>
+    <div id="game-container">
+      <div id="ui-layer">
+        <div class="hud-top">
+          <div class="hud-item">Lvl: <span id="level-display">1</span></div>
+          <div class="hud-item">Time: <span id="time-display">00:00</span></div>
+          <div class="hud-item">Keys: <span id="keys-display"></span></div>
+          <button id="btn-sound" class="hud-item">🔊 ON</button>
+        </div>
+
+        <div class="power-hud">
+          <div class="power-slot">
+            <div class="power-icon" id="btn-freeze">❄️</div>
+            <div class="key-hint">Q</div>
+            <div class="power-count" id="count-freeze">3</div>
+            <div class="cooldown-overlay" id="cd-freeze"></div>
+          </div>
+          <div class="power-slot">
+            <div class="power-icon" id="btn-ghost">👻</div>
+            <div class="key-hint">E</div>
+            <div class="power-count" id="count-ghost">3</div>
+            <div class="cooldown-overlay" id="cd-ghost"></div>
+          </div>
+        </div>
+      </div>
+
+      <canvas id="gameCanvas"></canvas>
+
+      <div id="start-screen" class="screen active">
+        <h1>MAGMA CORE</h1>
+        <p>Collect Keys. Evade Sentinels.</p>
+        <div id="leaderboard-preview"></div>
+        <button id="start-btn" class="btn">INITIALIZE SYSTEM</button>
+        <button id="reset-save-btn" class="btn secondary">RESET DATA</button>
+      </div>
+
+      <div id="game-over-screen" class="screen">
+        <h1 style="color: red">SIGNAL LOST</h1>
+        <p>The drone was destroyed.</p>
+        <button id="restart-level-btn" class="btn">RETRY SECTOR</button>
+      </div>
+
+      <div id="level-complete-screen" class="screen">
+        <h1>SECTOR CLEARED</h1>
+        <div class="stars" id="lc-stars">⭐⭐⭐</div>
+        <p>Time: <span id="lc-time"></span></p>
+        <button id="next-level-btn" class="btn">NEXT SECTOR</button>
+      </div>
+
+      <div id="mobile-controls">
+        <div class="d-pad">
+          <button class="d-btn up" data-key="ArrowUp">▲</button>
+          <div class="d-row">
+            <button class="d-btn left" data-key="ArrowLeft">◀</button>
+            <button class="d-btn right" data-key="ArrowRight">▶</button>
+          </div>
+          <button class="d-btn down" data-key="ArrowDown">▼</button>
+        </div>
+        <div class="action-btns">
+          <button class="d-btn action" data-key="q">❄️</button>
+          <button class="d-btn action" data-key="e">👻</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="/js/maze.js"></script>
+  </body>
+</html>

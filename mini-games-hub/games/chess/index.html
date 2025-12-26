@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Grandmaster Pro Chess</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div class="app-container">
+      <aside class="sidebar">
+        <div class="logo-area">
+          <h1>♟️ Grandmaster</h1>
+          <p style="opacity: 0.6; font-size: 0.8rem; margin-top: 5px">
+            PRO CHESS SUITE
+          </p>
+        </div>
+
+        <hr
+          style="
+            border: 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            width: 100%;
+          "
+        />
+
+        <div class="game-settings">
+          <label
+            style="
+              font-size: 0.8rem;
+              opacity: 0.7;
+              margin-bottom: 5px;
+              display: block;
+            "
+            >GAME MODE</label
+          >
+          <select id="mode-select">
+            <option value="human">👤 Human vs Human</option>
+            <option value="ai-easy">🤖 AI (Easy)</option>
+            <option value="ai-medium" selected>🤖 AI (Medium)</option>
+            <option value="online">🌐 Online Multiplayer</option>
+          </select>
+
+          <div
+            class="setting-row"
+            style="display: flex; gap: 10px; margin-top: 10px"
+          >
+            <div style="flex: 1">
+              <label
+                style="
+                  font-size: 0.8rem;
+                  opacity: 0.7;
+                  margin-bottom: 5px;
+                  display: block;
+                "
+                >TIMER</label
+              >
+              <select id="timer-select">
+                <option value="180">3 Min (Blitz)</option>
+                <option value="300" selected>5 Min (Rapid)</option>
+                <option value="600">10 Min (Classic)</option>
+                <option value="0">No Timer</option>
+              </select>
+            </div>
+            <div style="flex: 1">
+              <label
+                style="
+                  font-size: 0.8rem;
+                  opacity: 0.7;
+                  margin-bottom: 5px;
+                  display: block;
+                "
+                >PLAY AS</label
+              >
+              <select id="color-select">
+                <option value="w">⚪ White</option>
+                <option value="b">⚫ Black</option>
+              </select>
+            </div>
+          </div>
+
+          <div id="room-controls" class="hidden" style="margin-top: 10px">
+            <input type="text" id="room-code" placeholder="Enter Room Code" />
+            <div style="display: flex; gap: 5px; margin-top: 5px">
+              <button id="join-btn">Join</button>
+              <button id="create-btn">Create</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="status-area">
+          <div class="timers">
+            <div id="timer-w" class="timer active">White: 05:00</div>
+            <div id="timer-b" class="timer">Black: 05:00</div>
+          </div>
+
+          <div
+            class="turn-indicator"
+            style="
+              background: rgba(255, 255, 255, 0.1);
+              padding: 15px;
+              border-radius: 8px;
+              text-align: center;
+              margin-top: 10px;
+            "
+          >
+            <span id="turn-text" style="font-weight: bold; font-size: 1.2rem"
+              >White's Turn</span
+            >
+          </div>
+        </div>
+
+        <div class="history-panel">
+          <h3
+            style="
+              margin-top: 0;
+              font-size: 0.9rem;
+              opacity: 0.8;
+              position: sticky;
+              top: 0;
+            "
+          >
+            Move History
+          </h3>
+          <ul
+            id="move-list"
+            style="
+              list-style: none;
+              padding: 0;
+              font-size: 0.9rem;
+              opacity: 0.8;
+            "
+          ></ul>
+        </div>
+
+        <div class="controls" style="display: flex; gap: 10px; flex-wrap: wrap">
+          <button id="restart-btn" style="flex: 1">Restart Game</button>
+          <button id="theme-btn" style="width: 50px">🌗</button>
+        </div>
+      </aside>
+
+      <main class="game-area">
+        <div id="board" class="board"></div>
+      </main>
+    </div>
+
+    <div id="promotion-modal" class="modal hidden">
+      <div class="modal-content">
+        <h2>Promote Pawn</h2>
+        <div class="promotion-options">
+          <span data-piece="q">♕</span>
+          <span data-piece="r">♖</span>
+          <span data-piece="b">♗</span>
+          <span data-piece="n">♘</span>
+        </div>
+      </div>
+    </div>
+
+    <div id="game-over-modal" class="modal hidden">
+      <div class="modal-content game-over-content">
+        <h2 id="winner-title">GAME OVER</h2>
+        <p id="winner-reason" style="font-size: 1.2rem; opacity: 0.8">
+          Checkmate
+        </p>
+        <button onclick="location.reload()">Play New Game</button>
+      </div>
+    </div>
+
+    <script src="js/pieces.js"></script>
+    <script src="js/rules.js"></script>
+    <script src="js/ai.js"></script>
+    <script src="js/multiplayer.js"></script>
+    <script src="js/main.js"></script>
+  </body>
+</html>
